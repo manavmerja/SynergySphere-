@@ -1,30 +1,36 @@
 import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  description: String,
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   updatedAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
-
-  // ✅ Array of ObjectIds (each referencing Task)
-  task: [
+  tasks: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Task",
+      ref: "Task"
     }
   ],
-
-  // ✅ Array of ObjectIds (each referencing User)
-  teamMember: [
+  teamMembers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User"
     }
   ],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  }
 });
 
-export const Projects = mongoose.model("Project", projectSchema);
+export const Project = mongoose.model("Project", projectSchema);

@@ -22,6 +22,7 @@ import {
 import { Plus, Calendar, Users, Search, Filter, UserPlus } from "lucide-react"
 import Link from "next/link"
 import { useRequireAuth } from "@/app/utils/auth"
+import axios from "axios"
 
 const initialProjects = [
   {
@@ -145,32 +146,32 @@ export default function ProjectsPage() {
     }
   }
 
-  const handleCreateProject = () => {
-    const newProjectData = {
-      id: projects.length + 1,
-      name: newProject.name,
-      description: newProject.description,
-      progress: 0,
-      dueDate: new Date(newProject.dueDate)
-        .toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "2-digit",
-        })
-        .replace(/\//g, "/"),
-      tags: ["New", "Project"],
-      taskCount: 0,
-      image: "/placeholder.svg?key=8igeg",
-      members: [
-        { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
-      ],
-      status: "planning",
-      priority: "medium",
-    }
-    setProjects([...projects, newProjectData])
-    setIsNewProjectOpen(false)
-    setNewProject({ name: "", description: "", dueDate: "" })
+ const handleCreateProject = async () => {
+  try {
+    const token = localStorage.getItem("token"); // get JWT stored after login
+    const res = await axios.post(
+      "http://localhost:5000/api/project/createProject",
+      {
+        name: newProject.name,
+        description: newProject.description,
+        dueDate: newProject.dueDate,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // pass token for auth
+        },
+      }
+    );
+
+    // Project created successfully
+    setProjects([...projects, res.data]);
+    setIsNewProjectOpen(false);
+    setNewProject({ name: "", description: "", dueDate: "" });
+  } catch (err) {
+    console.error("Project creation failed:", err);
   }
+};
+
 
   const handleManageTeam = (e, project) => {
     e.preventDefault()
