@@ -111,6 +111,7 @@ import axios from "axios"
 export default function ProjectsPage() {
   useRequireAuth()
   const [projects, setProjects] = useState([])
+  const [submitting, setSubmitting] = useState(false);
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
   const [teamModalOpen, setTeamModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
@@ -148,7 +149,8 @@ export default function ProjectsPage() {
 
  const handleCreateProject = async () => {
   try {
-    const token = localStorage.getItem("token"); // get JWT stored after login
+    const token = localStorage.getItem("token");
+    setSubmitting(true); // get JWT stored after login
     const res = await axios.post(
       "http://localhost:5000/api/project/createProject",
       {
@@ -170,6 +172,7 @@ export default function ProjectsPage() {
   } catch (err) {
     console.error("Project creation failed:", err);
   }
+  setSubmitting(false)
 };
 
 
@@ -257,7 +260,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" onClick={handleCreateProject} disabled={!newProject.name.trim()}>
+                  <Button type="submit" onClick={handleCreateProject} disabled={!newProject.name.trim() || submitting}>
                     Create Project
                   </Button>
                 </DialogFooter>
