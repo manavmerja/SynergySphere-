@@ -24,93 +24,93 @@ import Link from "next/link"
 import { useRequireAuth } from "@/app/utils/auth"
 import axios from "axios"
 
-const initialProjects = [
-  {
-    id: 1,
-    name: "RD Services",
-    description: "Complete overhaul of company website",
-    progress: 75,
-    dueDate: "21/03/22",
-    tags: ["Services", "Customer Care"],
-    taskCount: 10,
-    image: "/placeholder.svg?key=8igeg",
-    members: [
-      { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
-      { id: "2", name: "Jane Smith", email: "jane@example.com", role: "Member", avatar: "/letter-j-typography.png" },
-      {
-        id: "3",
-        name: "Mike Johnson",
-        email: "mike@example.com",
-        role: "Member",
-        avatar: "/letter-m-typography.png",
-      },
-      {
-        id: "4",
-        name: "Sarah Wilson",
-        email: "sarah@example.com",
-        role: "Member",
-        avatar: "/abstract-letter-s.png",
-      },
-      { id: "5", name: "Tom Brown", email: "tom@example.com", role: "Member", avatar: "/letter-t-typography.png" },
-    ],
-    status: "active",
-    priority: "high",
-  },
-  {
-    id: 2,
-    name: "RD Sales",
-    description: "iOS and Android app for customer portal",
-    progress: 45,
-    dueDate: "21/03/22",
-    tags: ["Sales", "Customer Care"],
-    taskCount: 8,
-    image: "/placeholder.svg?key=ukh2j",
-    members: [
-      { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
-      { id: "6", name: "Alex Davis", email: "alex@example.com", role: "Member", avatar: "/letter-a-abstract.png" },
-      { id: "7", name: "Lisa Garcia", email: "lisa@example.com", role: "Member", avatar: "/letter-L-nature.png" },
-    ],
-    status: "active",
-    priority: "medium",
-  },
-  {
-    id: 3,
-    name: "RD Upgrade",
-    description: "Q1 digital marketing strategy implementation",
-    progress: 90,
-    dueDate: "21/03/22",
-    tags: ["Upgrade", "Migration"],
-    taskCount: 5,
-    image: "/placeholder.svg?key=uveqo",
-    members: [
-      { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
-      { id: "8", name: "Emma Taylor", email: "emma@example.com", role: "Member", avatar: "/letter-e-abstract.png" },
-      { id: "9", name: "Chris Lee", email: "chris@example.com", role: "Member", avatar: "/letter-c-typography.png" },
-    ],
-    status: "review",
-    priority: "high",
-  },
-  {
-    id: 4,
-    name: "Database Migration",
-    description: "Migrate legacy systems to cloud infrastructure",
-    progress: 20,
-    dueDate: "21/03/22",
-    tags: ["Database", "Migration"],
-    taskCount: 3,
-    image: "/placeholder.svg?key=db123",
-    members: [
-      { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
-      { id: "10", name: "David Kim", email: "david@example.com", role: "Member", avatar: "/letter-d-floral.png" },
-    ],
-    status: "planning",
-    priority: "low",
-  },
-]
+// const initialProjects = [
+//   {
+//     id: 1,
+//     name: "RD Services",
+//     description: "Complete overhaul of company website",
+//     progress: 75,
+//     dueDate: "21/03/22",
+//     tags: ["Services", "Customer Care"],
+//     taskCount: 10,
+//     image: "/placeholder.svg?key=8igeg",
+//     members: [
+//       { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
+//       { id: "2", name: "Jane Smith", email: "jane@example.com", role: "Member", avatar: "/letter-j-typography.png" },
+//       {
+//         id: "3",
+//         name: "Mike Johnson",
+//         email: "mike@example.com",
+//         role: "Member",
+//         avatar: "/letter-m-typography.png",
+//       },
+//       {
+//         id: "4",
+//         name: "Sarah Wilson",
+//         email: "sarah@example.com",
+//         role: "Member",
+//         avatar: "/abstract-letter-s.png",
+//       },
+//       { id: "5", name: "Tom Brown", email: "tom@example.com", role: "Member", avatar: "/letter-t-typography.png" },
+//     ],
+//     status: "active",
+//     priority: "high",
+//   },
+//   {
+//     id: 2,
+//     name: "RD Sales",
+//     description: "iOS and Android app for customer portal",
+//     progress: 45,
+//     dueDate: "21/03/22",
+//     tags: ["Sales", "Customer Care"],
+//     taskCount: 8,
+//     image: "/placeholder.svg?key=ukh2j",
+//     members: [
+//       { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
+//       { id: "6", name: "Alex Davis", email: "alex@example.com", role: "Member", avatar: "/letter-a-abstract.png" },
+//       { id: "7", name: "Lisa Garcia", email: "lisa@example.com", role: "Member", avatar: "/letter-L-nature.png" },
+//     ],
+//     status: "active",
+//     priority: "medium",
+//   },
+//   {
+//     id: 3,
+//     name: "RD Upgrade",
+//     description: "Q1 digital marketing strategy implementation",
+//     progress: 90,
+//     dueDate: "21/03/22",
+//     tags: ["Upgrade", "Migration"],
+//     taskCount: 5,
+//     image: "/placeholder.svg?key=uveqo",
+//     members: [
+//       { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
+//       { id: "8", name: "Emma Taylor", email: "emma@example.com", role: "Member", avatar: "/letter-e-abstract.png" },
+//       { id: "9", name: "Chris Lee", email: "chris@example.com", role: "Member", avatar: "/letter-c-typography.png" },
+//     ],
+//     status: "review",
+//     priority: "high",
+//   },
+//   {
+//     id: 4,
+//     name: "Database Migration",
+//     description: "Migrate legacy systems to cloud infrastructure",
+//     progress: 20,
+//     dueDate: "21/03/22",
+//     tags: ["Database", "Migration"],
+//     taskCount: 3,
+//     image: "/placeholder.svg?key=db123",
+//     members: [
+//       { id: "1", name: "John Doe", email: "john@example.com", role: "Owner", avatar: "/letter-j-typography.png" },
+//       { id: "10", name: "David Kim", email: "david@example.com", role: "Member", avatar: "/letter-d-floral.png" },
+//     ],
+//     status: "planning",
+//     priority: "low",
+//   },
+// ]
 
 export default function ProjectsPage() {
   useRequireAuth()
-  const [projects, setProjects] = useState(initialProjects)
+  const [projects, setProjects] = useState([])
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
   const [teamModalOpen, setTeamModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
@@ -195,6 +195,7 @@ export default function ProjectsPage() {
         },
       })
       console.log(res.data);
+      setProjects(res.data);
       
     }
     fetchdata();
@@ -289,97 +290,102 @@ export default function ProjectsPage() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 * index }}
-                whileHover={{ y: -2 }}
-                className="group"
+  <motion.div
+    key={project._id} // <-- use _id
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay: 0.1 * index }}
+    whileHover={{ y: -2 }}
+    className="group"
+  >
+    <Link href={`/projects/${project._id}`}> {/* <-- use _id */}
+      <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer border-2 border-border/50 hover:border-primary/20 bg-card">
+        <CardHeader className="pb-2">
+          <div className="flex items-start justify-between mb-2">
+            <div className="flex gap-1 flex-wrap">
+              {(project.tags || []).map((tag, tagIndex) => (
+                <span
+                  key={tagIndex}
+                  className={`px-2 py-1 text-xs font-medium rounded-md ${
+                    tagIndex === 0
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                      : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                  }`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={(e) => handleManageTeam(e, project)}
               >
-                <Link href={`/projects/${project.id}`}>
-                  <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer border-2 border-border/50 hover:border-primary/20 bg-card">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex gap-1 flex-wrap">
-                          {(project.tags || []).map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className={`px-2 py-1 text-xs font-medium rounded-md ${
-                                tagIndex === 0
-                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                              }`}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={(e) => handleManageTeam(e, project)}
-                          >
-                            <UserPlus className="h-3 w-3" />
-                          </Button>
-                          <Badge className={getStatusColor(project.status)}>{project.status}</Badge>
-                          <Badge className={getPriorityColor(project.priority)}>{project.priority}</Badge>
-                        </div>
-                      </div>
-                      <CardTitle className="text-base font-semibold leading-tight">{project.name}</CardTitle>
-                      <CardDescription className="text-sm mt-1">{project.description}</CardDescription>
-                    </CardHeader>
+                <UserPlus className="h-3 w-3" />
+              </Button>
+              <Badge className={getStatusColor(project.status || "planning")}>
+                {project.status || "planning"}
+              </Badge>
+              <Badge className={getPriorityColor(project.priority || "medium")}>
+                {project.priority || "medium"}
+              </Badge>
+            </div>
+          </div>
+          <CardTitle className="text-base font-semibold leading-tight">{project.name}</CardTitle>
+          <CardDescription className="text-sm mt-1">{project.description}</CardDescription>
+        </CardHeader>
 
-                    <CardContent className="pt-0 pb-4">
-                      <div className="mb-4 rounded-lg overflow-hidden bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30">
-                        <img
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.name}
-                          className="w-full h-24 object-cover"
-                        />
-                      </div>
+        <CardContent className="pt-0 pb-4">
+          <div className="mb-4 rounded-lg overflow-hidden bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30">
+            <img
+              src={project.image || "/placeholder.svg"}
+              alt={project.name}
+              className="w-full h-24 object-cover"
+            />
+          </div>
 
-                      <div className="mb-3">
-                        <div className="flex justify-between text-sm mb-2">
-                          <span className="text-muted-foreground">Progress</span>
-                          <span className="font-medium">{project.progress}%</span>
-                        </div>
-                        <Progress value={project.progress} className="h-2" />
-                      </div>
+          <div className="mb-3">
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-muted-foreground">Progress</span>
+              <span className="font-medium">{project.progress ?? 0}%</span>
+            </div>
+            <Progress value={project.progress ?? 0} className="h-2" />
+          </div>
 
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center text-muted-foreground">
-                          <Calendar className="mr-1 h-3 w-3" />
-                          {project.dueDate}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center text-muted-foreground">
-                            <span className="text-xs">{project.taskCount || 0} tasks</span>
-                          </div>
-                          <div className="flex -space-x-1">
-                            {project.members.slice(0, 3).map((member, memberIndex) => (
-                              <Avatar key={member.id} className="h-6 w-6 border-2 border-background">
-                                <AvatarImage src={member.avatar || "/placeholder.svg"} />
-                                <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                            ))}
-                            {project.members.length > 3 && (
-                              <div className="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center">
-                                <span className="text-xs font-medium text-muted-foreground">
-                                  +{project.members.length - 3}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center text-muted-foreground">
+              <Calendar className="mr-1 h-3 w-3" />
+              {project.dueDate}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center text-muted-foreground">
+                <span className="text-xs">{project.taskCount ?? 0} tasks</span>
+              </div>
+              <div className="flex -space-x-1">
+                {(project.members || []).slice(0, 3).map((member) => (
+                  <Avatar key={member._id || member.id} className="h-6 w-6 border-2 border-background">
+                    <AvatarImage src={member.avatar || "/placeholder.svg"} />
+                    <AvatarFallback className="text-xs">{member.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                ))}
+                {(project.members || []).length > 3 && (
+                  <div className="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      +{(project.members?.length ?? 0) - 3}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  </motion.div>
+))}
+
           </motion.div>
         </div>
       </main>
