@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, Trash2, Lock } from "lucide-react"
-import type { Task } from "@/app/kanban/page"
+import type { Task } from "../../_kanban/page"
 
 interface TaskCardProps {
   task: Task

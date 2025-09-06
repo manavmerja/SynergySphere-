@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { TaskCard } from "@/components/task-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import type { Task } from "@/app/kanban/page"
+import type { Task } from "../../_kanban/page"
 
 interface KanbanBoardProps {
   tasks: Task[]

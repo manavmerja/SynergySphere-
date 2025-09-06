@@ -13,7 +13,6 @@ import "./globals.css"
 export const metadata: Metadata = {
   title: "SynergySphere - Team Collaboration Platform",
   description: "Advanced team collaboration platform for modern teams",
-  generator: "v0.app",
 }
 
 export default function RootLayout({

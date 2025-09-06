@@ -22,7 +22,6 @@ import { usePathname } from "next/navigation"
 const navigation = [
   { name: "Projects", href: "/dashboard", icon: LayoutDashboard },
   { name: "My Tasks", href: "/my-tasks", icon: CheckSquare },
-  { name: "Kanban", href: "/kanban", icon: Kanban },
   { name: "Discussions", href: "/discussions", icon: MessageSquare },
   { name: "Team", href: "/team", icon: Users },
   { name: "Settings", href: "/settings", icon: Settings },
