@@ -20,7 +20,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navigation = [
-  { name: "Projects", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Projects", href: "/projectsd", icon: LayoutDashboard },
   { name: "My Tasks", href: "/my-tasks", icon: CheckSquare },
   { name: "Discussions", href: "/discussions", icon: MessageSquare },
   { name: "Team", href: "/team", icon: Users },
