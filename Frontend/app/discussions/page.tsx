@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Send, Search, Hash, Users, MessageSquare } from "lucide-react"
-
+import {useRequireAuth} from "@/app/utils/auth"
 interface Message {
   id: string
   author: {
@@ -83,6 +83,7 @@ const mockMessages: Message[] = [
 ]
 
 export default function DiscussionsPage() {
+    useRequireAuth();
   const [selectedChannel, setSelectedChannel] = useState<string>("website-redesign")
   const [messages, setMessages] = useState<Message[]>(mockMessages)
   const [newMessage, setNewMessage] = useState("")

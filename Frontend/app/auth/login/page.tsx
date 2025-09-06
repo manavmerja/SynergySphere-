@@ -37,6 +37,10 @@ export default function LoginPage() {
       const res = axios.post("http://localhost:5000/api/auth/login", data)
       console.log("Login data:", data)
       // Redirect to dashboard on success
+       const token = (await res).data.token
+
+    // Save token in localStorage
+    localStorage.setItem("token", token)
       window.location.href = "/dashboard"
     } catch (err) {
       setError("Invalid email or password. Please try again.")

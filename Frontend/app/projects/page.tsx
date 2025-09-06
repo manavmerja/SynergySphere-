@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Plus, Calendar, Users, Search, Filter } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import {useRequireAuth} from "@/app/utils/auth"
 
 const projects = [
   {
@@ -91,6 +92,7 @@ const projects = [
 ]
 
 export default function ProjectsPage() {
+    useRequireAuth();
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":

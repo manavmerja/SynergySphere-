@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus, Calendar, Users, Search, Filter } from "lucide-react"
+import {useRequireAuth} from "@/app/utils/auth"
 
 const initialProjects = [
   {
@@ -102,6 +103,7 @@ const initialProjects = [
 ]
 
 export default function ProjectsPage() {
+  useRequireAuth();
   const [projects, setProjects] = useState(initialProjects)
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
   const [newProject, setNewProject] = useState({

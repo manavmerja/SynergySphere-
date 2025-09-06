@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Plus, Search, Mail, MessageSquare, MoreHorizontal } from "lucide-react"
-
+import {useRequireAuth} from "@/app/utils/auth"
 const teamMembers = [
   {
     id: 1,
@@ -72,6 +72,7 @@ const teamMembers = [
 ]
 
 export default function TeamPage() {
+    useRequireAuth();
   const getStatusColor = (status: string) => {
     switch (status) {
       case "online":

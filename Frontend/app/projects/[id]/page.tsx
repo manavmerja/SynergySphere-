@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TeamManagementModal } from "@/components/team-management-modal"
 import { TaskCreationModal } from "@/components/task-creation-modal"
 import { ProjectSettingsModal } from "@/components/project-settings-modal"
+import {useRequireAuth} from "@/app/utils/auth"
 import {
   ArrowLeft,
   Calendar,
@@ -167,7 +168,7 @@ export default function ProjectDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params); // ✅ unwraps the params safely
-
+  useRequireAuth();
   const [activeTab, setActiveTab] = useState("tasks");
   const [project, setProject] = useState(projectData);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);

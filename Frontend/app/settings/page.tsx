@@ -15,8 +15,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { User, Bell, Palette, Type, Shield, LogOut, Camera, Save } from "lucide-react"
 import { useTheme } from "next-themes"
-
+import {useRequireAuth} from "@/app/utils/auth"
 export default function SettingsPage() {
+    useRequireAuth();
   const { theme, setTheme } = useTheme()
   const { fontSize, setFontSize } = useFontSize()
   const [notifications, setNotifications] = useState({

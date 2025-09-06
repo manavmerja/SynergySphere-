@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { CheckCircle2, Clock, AlertCircle, Search } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-
+import {useRequireAuth} from "@/app/utils/auth"
 interface Task {
   id: number
   title: string
@@ -69,6 +69,7 @@ const myTasks: Task[] = [
 ]
 
 export default function MyTasksPage() {
+    useRequireAuth();
   const [tasks, setTasks] = useState<Task[]>(myTasks)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
