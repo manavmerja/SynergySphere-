@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import axios from "axios"
 
 interface SignupForm {
   name: string
@@ -38,11 +39,11 @@ export default function SignupPage() {
     setError("")
 
     try {
+      await axios.post(`http://localhost:5000/api/auth/signup`, data)
+
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log("Signup data:", data)
       // Redirect to dashboard on success
-      window.location.href = "/dashboard"
+      window.location.href = "/auth/login"
     } catch (err) {
       setError("Failed to create account. Please try again.")
     } finally {

@@ -10,11 +10,11 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:5173", // if using Vite
-  // origin: "http://localhost:3000", // if using CRA or Next.js dev
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true, // if you use cookies/auth headers
+  origin: "http://localhost:3000",
+  methods: ["GET","POST","PUT","DELETE"],
+  credentials: true
 }))
+
 app.use(express.json());
 
 // Fix __dirname in ESM
@@ -33,7 +33,6 @@ for (const file of routeFiles) {
   const routeName = file.replace("Routes.js", "").toLowerCase();
   app.use(`/api/${routeName}`, route);
   console.log(routeName);
-  
 }
 
 
