@@ -298,7 +298,7 @@ export default function ProjectDetailPage({
             className="mb-8"
           >
             <div className="flex items-center mb-4">
-              <Link href="/dashboard">
+              <Link href="/projects">
                 <Button variant="ghost" size="icon" className="mr-4">
                   <ArrowLeft className="h-4 w-4" />
                 </Button>

@@ -148,7 +148,7 @@ export const signup = async (req, res) => {
       },
     });
 
-    const verifyUrl = `http://localhost:3000/verify-email?token=${token}&email=${email}`;
+    const verifyUrl = `http://localhost:3000/auth/verify-email?token=${token}&email=${email}`;
 
     await transporter.sendMail({
       from: `"SynergySphere" <${process.env.SMTP_USER}>`,
