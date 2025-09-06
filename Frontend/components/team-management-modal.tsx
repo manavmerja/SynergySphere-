@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { UserPlus, X, Mail } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
+import axios from "axios"
 
 interface TeamMember {
   id: number
@@ -28,8 +29,8 @@ interface TeamMember {
 
 interface TeamManagementModalProps {
   isOpen: boolean
+  id : String
   onClose: () => void
-  onInvite: (email: string, role: string) => void
   onRemove: (memberId: number) => void
   members: TeamMember[]
   isOwner: boolean
@@ -41,57 +42,42 @@ const projectRoles = ["Project Manager", "Designer", "Developer", "QA Tester", "
 export function TeamManagementModal({
   isOpen,
   onClose,
-  onInvite,
   onRemove,
   members,
+  id,
   isOwner,
   projectName,
 }: TeamManagementModalProps) {
   const [newMemberEmail, setNewMemberEmail] = useState("")
   const [selectedRole, setSelectedRole] = useState("Developer")
   const [isInviting, setIsInviting] = useState(false)
+ const handleInviteMember = async () => {
+  try {
+    const token = localStorage.getItem("token"); 
+    const res = await axios.post(
+      `http://localhost:5000/api/task/invite/${id}`,
+      { newMemberEmail, selectedRole }, // 👈 actual request body
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    console.log(id);
+    
+    const newMember = res.data;
 
-  const handleInviteMember = async () => {
-    if (!newMemberEmail.trim()) {
-      toast({
-        title: "Email required",
-        description: "Please enter an email address.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(newMemberEmail)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    // Check if member already exists
-    if (members.some((member) => member.email === newMemberEmail)) {
-      toast({
-        title: "Member already exists",
-        description: "This user is already a member of the project.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    setIsInviting(true)
-
-    // Simulate API call delay
-    setTimeout(() => {
-      onInvite(newMemberEmail, selectedRole)
-      setNewMemberEmail("")
-      setSelectedRole("Developer")
-      setIsInviting(false)
-    }, 500)
+    toast({
+      title: "Member invited successfully",
+      description: `${newMemberEmail} has been invited to the project as ${selectedRole}`,
+    });
+  } catch (err) {
+    console.error("Failed to invite member:", err);
+    toast({
+      title: "Invite failed",
+      description: "Could not invite member. Please try again.",
+      variant: "destructive",
+    });
   }
+};
 
   const handleRemoveMember = (memberId: number) => {
     const memberToRemove = members.find((m) => m.id === memberId)

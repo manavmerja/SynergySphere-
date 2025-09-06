@@ -185,23 +185,6 @@ export default function ProjectDetailPage({
   const canManageTeam = isProjectOwner || currentUser.role === "admin"
   const canEditTasks = isProjectAdmin || project.members.some((m) => m.id === currentUser.id)
 
-  const handleInviteMember = async (email: string, role: string) => {
-    
-    const token = localStorage.getItem("token"); // your auth token
-    const res = await axios.post(`http://localhost:5000/api/task/${id}/invite`,{
-      headers : {Authorization: `Bearer ${token}` }
-    });
-
-    setProject((prev) => ({
-      ...prev,
-      members: [...prev.members, newMember],
-    }))
-
-    toast({
-      title: "Member invited successfully",
-      description: `${email} has been invited to the project as ${role}`,
-    })
-  }
   useEffect(() => {
   const fetchTasks = async () => {
     try {
@@ -684,8 +667,8 @@ export default function ProjectDetailPage({
         <TeamManagementModal
           isOpen={isTeamModalOpen}
           onClose={() => setIsTeamModalOpen(false)}
-          onInvite={handleInviteMember}
           onRemove={handleRemoveMember}
+          id={id}
           members={project.members}
           isOwner={isProjectOwner}
           projectName={project.name}
