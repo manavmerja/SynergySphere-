@@ -5,8 +5,6 @@ const router = express.Router();
 
 // Import models (you'll need to adjust the path based on your project structure)
 // Assuming models are in a separate models folder
-import Message from "../models/Message.js";
-import BlockedUser from "../models/BlockedUser.js";
 
 // Authentication middleware (should be applied before using these routes)
 const authenticate = (req, res, next) => {
