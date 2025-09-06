@@ -15,9 +15,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { User, Bell, Palette, Type, Shield, LogOut, Camera, Save } from "lucide-react"
 import { useTheme } from "next-themes"
-import {useRequireAuth} from "@/app/utils/auth"
+import { useRequireAuth } from "@/app/utils/auth"
+
+
+
 export default function SettingsPage() {
-    useRequireAuth();
+  useRequireAuth();
   const { theme, setTheme } = useTheme()
   const { fontSize, setFontSize } = useFontSize()
   const [notifications, setNotifications] = useState({
@@ -40,8 +43,8 @@ export default function SettingsPage() {
 
   const handleLogout = () => {
     // In a real app, this would handle logout
-    console.log("Logging out...")
-    window.location.href = "/auth/login"
+    localStorage.removeItem("token");
+    window.location.href = "/auth/login";
   }
 
   return (
