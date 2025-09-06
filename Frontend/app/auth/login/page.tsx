@@ -36,12 +36,12 @@ export default function LoginPage() {
       // Simulate API call
       const res = axios.post("http://localhost:5000/api/auth/login", data)
       console.log("Login data:", data)
-      // Redirect to dashboard on success
+      // Redirect to projects on success
        const token = (await res).data.token
 
     // Save token in localStorage
     localStorage.setItem("token", token)
-      window.location.href = "/dashboard"
+      window.location.href = "/projects"
     } catch (err) {
       setError("Invalid email or password. Please try again.")
     } finally {

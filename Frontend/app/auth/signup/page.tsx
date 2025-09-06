@@ -42,7 +42,7 @@ export default function SignupPage() {
       await axios.post(`http://localhost:5000/api/auth/signup`, data)
 
       // Simulate API call
-      // Redirect to dashboard on success
+      // Redirect to projects on success
       window.location.href = "/auth/login"
     } catch (err) {
       setError("Failed to create account. Please try again.")
