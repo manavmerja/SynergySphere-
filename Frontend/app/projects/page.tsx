@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -186,7 +186,19 @@ export default function ProjectsPage() {
       setSelectedProject({ ...selectedProject, members: updatedMembers })
     }
   }
-
+  useEffect(()=>{
+    const token = localStorage.getItem('token');
+    const fetchdata = async () =>{
+      const res = await axios.get("http://localhost:5000/api/project/getProject",{
+        headers: {
+          Authorization: `Bearer ${token}`, // pass token for auth
+        },
+      })
+      console.log(res.data);
+      
+    }
+    fetchdata();
+  },[]);
   return (
     <div className="flex h-screen bg-background">
       <main className="flex-1 overflow-auto">
