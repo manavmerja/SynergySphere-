@@ -11,6 +11,7 @@ import { TeamManagementModal } from "@/components/team-management-modal"
 import { TaskCreationModal } from "@/components/task-creation-modal"
 import { ProjectSettingsModal } from "@/components/project-settings-modal"
 import {useRequireAuth} from "@/app/utils/auth"
+import { useEffect } from "react"
 import {
   ArrowLeft,
   Calendar,
@@ -25,6 +26,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
+import axios from "axios"
+import { headers } from "next/headers"
 
 // Mock current user - in real app this would come from auth context
 const currentUser = {
@@ -167,7 +170,7 @@ export default function ProjectDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params); // ✅ unwraps the params safely
+  const { id } = params; // ✅ unwraps the params safely
   useRequireAuth();
   const [activeTab, setActiveTab] = useState("tasks");
   const [project, setProject] = useState(projectData);
@@ -182,15 +185,12 @@ export default function ProjectDetailPage({
   const canManageTeam = isProjectOwner || currentUser.role === "admin"
   const canEditTasks = isProjectAdmin || project.members.some((m) => m.id === currentUser.id)
 
-  const handleInviteMember = (email: string, role: string) => {
-    const newMember = {
-      id: Date.now(),
-      name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
-      email,
-      role: "member",
-      projectRole: role,
-      avatar: `/placeholder.svg?height=32&width=32`,
-    }
+  const handleInviteMember = async (email: string, role: string) => {
+    
+    const token = localStorage.getItem("token"); // your auth token
+    const res = await axios.post(`http://localhost:5000/api/task/${id}/invite`,{
+      headers : {Authorization: `Bearer ${token}` }
+    });
 
     setProject((prev) => ({
       ...prev,
@@ -202,6 +202,40 @@ export default function ProjectDetailPage({
       description: `${email} has been invited to the project as ${role}`,
     })
   }
+  useEffect(() => {
+  const fetchTasks = async () => {
+    try {
+      const token = localStorage.getItem("token"); // your auth token
+      const res = await axios.get(
+        `http://localhost:5000/api/task/getTask/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res.data);
+      
+      // Update only the tasks in the project state
+      setProject((prev) => ({
+        ...prev,
+        tasks: res.data,
+      }));
+    } catch (err) {
+      console.error("Failed to fetch tasks:", err);
+      toast({
+        title: "Error fetching tasks",
+        description: "Unable to load tasks. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (id) {
+    fetchTasks();
+  }
+}, [id]);
+
 
   const handleRemoveMember = (memberId: number) => {
     if (!canManageTeam) {
@@ -224,17 +258,44 @@ export default function ProjectDetailPage({
     })
   }
 
-  const handleCreateTask = (newTask: any) => {
+  const handleCreateTask = async (taskData: {
+  title: string;
+  assigneeId: number;
+  dueDate: string;
+  priority: string;
+}) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.post(
+      `http://localhost:5000/api/task/createTask/${id}`, // use project ID from URL
+      taskData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // Update project state with the newly created task from the backend
     setProject((prev) => ({
       ...prev,
-      tasks: [...prev.tasks, newTask],
-    }))
+      tasks: [...prev.tasks, res.data],
+    }));
 
     toast({
       title: "Task created successfully",
-      description: `"${newTask.title}" has been added to the project`,
-    })
+      description: `"${taskData.title}" has been added to the project`,
+    });
+  } catch (err) {
+    console.error("Task creation failed:", err);
+    toast({
+      title: "Task creation failed",
+      description: "Please try again.",
+      variant: "destructive",
+    });
   }
+};
+
 
   const handleUpdateProject = (updatedProject: any) => {
     setProject(updatedProject)

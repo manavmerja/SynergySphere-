@@ -14,6 +14,11 @@ const projectSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  priority : {
+        type: String,
+        enum: ['low','medium' ,'high'],
+        default: 'low'
+    },
   tasks: [
     {
       type: mongoose.Schema.Types.ObjectId,

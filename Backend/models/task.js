@@ -5,6 +5,11 @@ const taskSchema = mongoose.Schema({
         type : Date,
         default : Date.now()
     },
+    ProjectId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Project",
+        required : true
+    },
     title : {
         type : String,
         required : true
