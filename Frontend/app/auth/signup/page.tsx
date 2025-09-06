@@ -43,7 +43,7 @@ export default function SignupPage() {
 
       // Simulate API call
       // Redirect to projects on success
-      window.location.href = "/auth/login"
+      window.location.href = "/auth/conf-email"
     } catch (err) {
       setError("Failed to create account. Please try again.")
     } finally {
