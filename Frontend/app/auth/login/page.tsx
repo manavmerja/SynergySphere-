@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import axios from "axios"
 
 interface LoginForm {
   email: string
@@ -33,7 +34,7 @@ export default function LoginPage() {
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const res = axios.post("http://localhost:5000/api/auth/login", data)
       console.log("Login data:", data)
       // Redirect to dashboard on success
       window.location.href = "/dashboard"
