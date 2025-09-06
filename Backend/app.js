@@ -1,19 +1,26 @@
+// app.js
 import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./connect.js";
 import { readdirSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import connectDB from "./connect.js";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-await connectDB();
 // Fix __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Connect DB
+await connectDB();
+
+// Auto-load all route files that end with Routes.js
 const routesPath = path.join(__dirname, "routes");
-const routeFiles = readdirSync(routesPath).filter(f => f.endsWith("Routes.js"));
+const routeFiles = readdirSync(routesPath).filter((f) => f.endsWith("Routes.js"));
 
 for (const file of routeFiles) {
   const { default: route } = await import(`./routes/${file}`);
@@ -21,9 +28,7 @@ for (const file of routeFiles) {
   app.use(`/api/${routeName}`, route);
 }
 
-
-
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
