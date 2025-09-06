@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const taskSchema = mongoose.Schema({
+    createdAt : {
+        type : Date,
+        default : Date.now()
+    },
     title : {
         type : String,
         required : true
