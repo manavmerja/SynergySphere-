@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -120,7 +119,6 @@ export default function ProjectsPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <main className="flex-1 overflow-auto">
         <div className="container mx-auto px-6 py-8">

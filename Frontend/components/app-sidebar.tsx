@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   LayoutDashboard,
@@ -29,9 +29,23 @@ const navigation = [
 ]
 
 export function AppSidebar() {
+
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [windowWidth, setWindowWidth] = useState<number | null>(null);
   const pathname = usePathname()
+
+  // Set window width on client only
+  React.useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   return (
     <>
@@ -60,7 +74,14 @@ export function AppSidebar() {
         initial={false}
         animate={{
           width: isCollapsed ? "80px" : "256px",
-          x: window.innerWidth >= 768 ? 0 : isMobileOpen ? 0 : "-100%",
+          x:
+            windowWidth === null
+              ? 0 // fallback for SSR
+              : windowWidth >= 768
+                ? 0
+                : isMobileOpen
+                  ? 0
+                  : "-100%",
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={cn(

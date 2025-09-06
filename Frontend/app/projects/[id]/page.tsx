@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"   // <-- add `use` here
 import { motion, AnimatePresence } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +9,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TeamManagementModal } from "@/components/team-management-modal"
 import { TaskCreationModal } from "@/components/task-creation-modal"
-import { TopNavigation } from "@/components/top-navigation"
 import { ProjectSettingsModal } from "@/components/project-settings-modal"
 import {
   ArrowLeft,
@@ -163,13 +161,19 @@ const projectData = {
   ],
 }
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const [activeTab, setActiveTab] = useState("tasks")
-  const [project, setProject] = useState(projectData)
-  const [isTeamModalOpen, setIsTeamModalOpen] = useState(false)
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-  const { toast } = useToast()
+export default function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params); // ✅ unwraps the params safely
+
+  const [activeTab, setActiveTab] = useState("tasks");
+  const [project, setProject] = useState(projectData);
+  const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const { toast } = useToast();
 
   // Permission checking functions
   const isProjectOwner = currentUser.id === project.owner
@@ -280,35 +284,9 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <main className="flex-1 overflow-auto">
-        <TopNavigation
-          breadcrumbs={[{ label: "Projects", href: "/dashboard" }, { label: project.name }]}
-          searchPlaceholder="Search tasks..."
-          actions={
-            <div className="flex gap-2">
-              {canEditTasks && (
-                <Button onClick={() => setIsTaskModalOpen(true)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Task
-                </Button>
-              )}
-              {canManageTeam && (
-                <Button variant="outline" onClick={() => setIsTeamModalOpen(true)}>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Invite Member
-                </Button>
-              )}
-              {isProjectOwner && (
-                <Button variant="outline" onClick={() => setIsSettingsModalOpen(true)}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </Button>
-              )}
-            </div>
-          }
-        />
+
 
         <div className="container mx-auto px-6 py-8">
           {/* Header */}
@@ -436,163 +414,198 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
               </TabsList>
 
               <AnimatePresence mode="wait">
-                <TabsContent value="tasks" className="space-y-4">
-                  <motion.div
-                    key="tasks"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="space-y-4"
+  {/* Tasks Tab */}
+  <TabsContent key="tasks" value="tasks" className="space-y-4">
+    <motion.div
+      key="tasks-motion"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-4"
+    >
+      {project.tasks.map((task, index) => (
+        <motion.div
+          key={task.id ?? `task-${index}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
+        >
+          <Card className="hover:shadow-md transition-shadow duration-200">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  {getStatusIcon(task.status)}
+                  <div>
+                    <h3 className="font-semibold">{task.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Assigned to {task.assignee}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <Badge className={getPriorityColor(task.priority)}>
+                    {task.priority}
+                  </Badge>
+                  <Badge className={getStatusColor(task.status)}>
+                    {task.status}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {task.dueDate}
+                  </span>
+                  {canEditTasks && (
+                    <Button variant="ghost" size="icon">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </motion.div>
+  </TabsContent>
+
+  {/* Kanban Tab */}
+  <TabsContent key="kanban" value="kanban" className="space-y-4">
+    <motion.div
+      key="kanban-motion"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="text-center py-12">
+        <h3 className="text-lg font-semibold mb-2">Kanban Board</h3>
+        <p className="text-muted-foreground mb-4">
+          Drag and drop tasks to manage workflow
+        </p>
+        <Link href={`/projects/${id}/kanban`}>
+          <Button>Open Kanban Board</Button>
+        </Link>
+      </div>
+    </motion.div>
+  </TabsContent>
+
+  {/* Discussions Tab */}
+  <TabsContent key="discussions" value="discussions" className="space-y-4">
+    <motion.div
+      key="discussions-motion"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-4"
+    >
+      {project.discussions.map((discussion, index) => (
+        <motion.div
+          key={discussion.id ?? `discussion-${index}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
+        >
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-start space-x-4">
+                <Avatar>
+                  <AvatarImage
+                    src={discussion.avatar || "/placeholder.svg"}
+                  />
+                  <AvatarFallback>
+                    {discussion.author.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <h4 className="font-semibold">{discussion.author}</h4>
+                    <span className="text-sm text-muted-foreground">
+                      {discussion.timestamp}
+                    </span>
+                  </div>
+                  <p className="text-sm">{discussion.message}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </motion.div>
+  </TabsContent>
+
+  {/* Members Tab */}
+  <TabsContent key="members" value="members" className="space-y-4">
+    <motion.div
+      key="members-motion"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-lg font-semibold">
+          Team Members ({project.members.length})
+        </h3>
+        {canManageTeam && (
+          <Button onClick={() => setIsTeamModalOpen(true)}>
+            <UserPlus className="mr-2 h-4 w-4" />
+            Invite Member
+          </Button>
+        )}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {project.members.map((member, index) => (
+          <motion.div
+            key={member.id ?? `member-${index}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="hover:shadow-lg transition-shadow duration-300">
+              <CardContent className="p-6 text-center">
+                <Avatar className="h-16 w-16 mx-auto mb-4">
+                  <AvatarImage
+                    src={member.avatar || "/placeholder.svg"}
+                  />
+                  <AvatarFallback className="text-lg">
+                    {member.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold mb-1">{member.name}</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {member.projectRole}
+                </p>
+                <div className="flex justify-center gap-2">
+                  <Badge
+                    variant={
+                      member.id === project.owner ? "default" : "secondary"
+                    }
                   >
-                    {project.tasks.map((task, index) => (
-                      <motion.div
-                        key={task.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                    {member.id === project.owner ? "Owner" : "Member"}
+                  </Badge>
+                  {canManageTeam &&
+                    member.id !== project.owner &&
+                    member.id !== currentUser.id && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveMember(member.id)}
+                        className="text-red-600 hover:text-red-700"
                       >
-                        <Card className="hover:shadow-md transition-shadow duration-200">
-                          <CardContent className="p-6">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-4">
-                                {getStatusIcon(task.status)}
-                                <div>
-                                  <h3 className="font-semibold">{task.title}</h3>
-                                  <p className="text-sm text-muted-foreground">Assigned to {task.assignee}</p>
-                                </div>
-                              </div>
-                              <div className="flex items-center space-x-4">
-                                <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
-                                <Badge className={getStatusColor(task.status)}>{task.status}</Badge>
-                                <span className="text-sm text-muted-foreground">{task.dueDate}</span>
-                                {canEditTasks && (
-                                  <Button variant="ghost" size="icon">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </TabsContent>
+                        Remove
+                      </Button>
+                    )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  </TabsContent>
+</AnimatePresence>
 
-                <TabsContent value="kanban" className="space-y-4">
-                  <motion.div
-                    key="kanban"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="text-center py-12">
-                      <h3 className="text-lg font-semibold mb-2">Kanban Board</h3>
-                      <p className="text-muted-foreground mb-4">Drag and drop tasks to manage workflow</p>
-                      <Link href={`/projects/${params.id}/kanban`}>
-                        <Button>Open Kanban Board</Button>
-                      </Link>
-                    </div>
-                  </motion.div>
-                </TabsContent>
-
-                <TabsContent value="discussions" className="space-y-4">
-                  <motion.div
-                    key="discussions"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="space-y-4"
-                  >
-                    {project.discussions.map((discussion, index) => (
-                      <motion.div
-                        key={discussion.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                      >
-                        <Card>
-                          <CardContent className="p-6">
-                            <div className="flex items-start space-x-4">
-                              <Avatar>
-                                <AvatarImage src={discussion.avatar || "/placeholder.svg"} />
-                                <AvatarFallback>{discussion.author.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1">
-                                <div className="flex items-center space-x-2 mb-2">
-                                  <h4 className="font-semibold">{discussion.author}</h4>
-                                  <span className="text-sm text-muted-foreground">{discussion.timestamp}</span>
-                                </div>
-                                <p className="text-sm">{discussion.message}</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </TabsContent>
-
-                <TabsContent value="members" className="space-y-4">
-                  <motion.div
-                    key="members"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-semibold">Team Members ({project.members.length})</h3>
-                      {canManageTeam && (
-                        <Button onClick={() => setIsTeamModalOpen(true)}>
-                          <UserPlus className="mr-2 h-4 w-4" />
-                          Invite Member
-                        </Button>
-                      )}
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {project.members.map((member, index) => (
-                        <motion.div
-                          key={member.id}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.3, delay: index * 0.1 }}
-                          whileHover={{ y: -4 }}
-                        >
-                          <Card className="hover:shadow-lg transition-shadow duration-300">
-                            <CardContent className="p-6 text-center">
-                              <Avatar className="h-16 w-16 mx-auto mb-4">
-                                <AvatarImage src={member.avatar || "/placeholder.svg"} />
-                                <AvatarFallback className="text-lg">{member.name.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                              <h3 className="font-semibold mb-1">{member.name}</h3>
-                              <p className="text-sm text-muted-foreground mb-2">{member.projectRole}</p>
-                              <div className="flex justify-center gap-2">
-                                <Badge variant={member.id === project.owner ? "default" : "secondary"}>
-                                  {member.id === project.owner ? "Owner" : "Member"}
-                                </Badge>
-                                {canManageTeam && member.id !== project.owner && member.id !== currentUser.id && (
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleRemoveMember(member.id)}
-                                    className="text-red-600 hover:text-red-700"
-                                  >
-                                    Remove
-                                  </Button>
-                                )}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                </TabsContent>
-              </AnimatePresence>
             </Tabs>
           </motion.div>
         </div>

@@ -113,7 +113,7 @@ export function TopNavigation({
           {/* Actions */}
           {actions && <div className="flex items-center space-x-2">{actions}</div>}
 
-          {/* More Options */}
+          {/* More Options
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -130,7 +130,7 @@ export function TopNavigation({
                 Invite Members
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
       </div>
     </div>

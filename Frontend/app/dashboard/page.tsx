@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -151,7 +150,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <main className="flex-1 overflow-auto md:ml-0 ml-0">
         <div className="container mx-auto px-4 sm:px-6 py-6 md:pt-6 pt-20">

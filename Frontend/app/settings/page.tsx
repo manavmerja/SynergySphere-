@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useFontSize } from "@/contexts/font-size-context"
 import { Button } from "@/components/ui/button"
@@ -46,7 +45,6 @@ export default function SettingsPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <main className="flex-1 overflow-auto">
         <div className="container mx-auto px-6 py-8 max-w-4xl">

@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -129,7 +128,6 @@ export default function DiscussionsPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Channels Sidebar */}

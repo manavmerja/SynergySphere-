@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { AppSidebar } from "@/components/app-sidebar"
 import { KanbanBoard } from "@/components/kanban-board"
 import { TaskModal } from "@/components/task-modal"
 import { TaskDetailModal } from "@/components/task-detail-modal"
@@ -116,7 +115,6 @@ export default function KanbanPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <AppSidebar />
 
       <main className="flex-1 overflow-auto">
         <div className="container mx-auto px-6 py-8">
