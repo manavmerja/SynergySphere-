@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import {Project} from "../models/project.js"
 export const createProject = async (req, res) => {
   try {
@@ -18,4 +19,13 @@ export const createProject = async (req, res) => {
     console.error(err);
     res.status(400).json({ message: "Project creation failed", errors: err.errors });
   }
+};
+
+export const getProject = async (req,res) =>{
+    const id = req.user._id.toString();
+    console.log(id);
+    
+    const projects = await Project.find({createdBy : id})
+    console.log("working");
+    res.json(projects)
 };
